@@ -1,9 +1,9 @@
 import { action, computed, observable } from "mobx";
-
 class MyState {
     @observable num1 = 0;
     @observable num2 = 100;
     @action addNum1 = () => {
+        console.log('++')
         this.num1++;
     };
     @action addNum2 = () => {

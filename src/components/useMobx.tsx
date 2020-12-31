@@ -1,32 +1,27 @@
-import { FC, useContext } from "react";
+import { FC } from "react";
+import { inject, observer } from "mobx-react";
 import { Button } from 'antd'
-import { StoreContext } from '../App'
 
-
-const UseMobx: FC = () => {
-    const state = useContext(StoreContext)
-
-    const addNum1=()=>{
-        if(state.addNum1){
-            console.log(state,'state====>>>>')
-            state.addNum1()
-        }
+interface MyStateProps {
+    mystate?: {
+        num1?: number,
+        num2?: number,
+        addNum1?: () => void,
+        addNum2?: () => void,
+        total?: number,
     }
-    const addNum2=()=>{
-        if(state.addNum2){
-            state.addNum2()
-        }
-    }
+}
 
+const UseMobx: FC<MyStateProps> = inject('mystate')(observer((props) => {
     return (
         <div>
-            <p>total={state.total}</p>
-            <p>num1={state.num1}</p>
-            <p>num2={state.num2}</p>
-            <Button onClick={addNum1} >addNum1</Button>
-            <Button onClick={addNum2}>addNum2</Button>
+            <p>total：{props.mystate?.total}</p>
+            <p>num1：{props.mystate?.num1}</p>
+            <p>num2：{props.mystate?.num2}</p>
+            <Button onClick={props.mystate?.addNum1}>addNum1</Button>
+            <Button onClick={props.mystate?.addNum2}>addNum2</Button>
         </div>
     )
-}
+}))
 
 export default UseMobx
