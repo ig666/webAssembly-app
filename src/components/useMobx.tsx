@@ -1,27 +1,23 @@
 import { FC } from "react";
-import { inject, observer } from "mobx-react";
+import MyState from '../store/data/countNum'
 import { Button } from 'antd'
-
-interface MyStateProps {
-    mystate?: {
-        num1?: number,
-        num2?: number,
-        addNum1?: () => void,
-        addNum2?: () => void,
-        total?: number,
-    }
+import { inject, observer } from "mobx-react";
+import { myState } from '../store/stores'
+interface props {
+    myState: MyState
 }
 
-const UseMobx: FC<MyStateProps> = inject('mystate')(observer((props) => {
+const UseMobx: FC<props> = (props) => {
+    const { myState } = props
     return (
         <div>
-            <p>total：{props.mystate?.total}</p>
-            <p>num1：{props.mystate?.num1}</p>
-            <p>num2：{props.mystate?.num2}</p>
-            <Button onClick={props.mystate?.addNum1}>addNum1</Button>
-            <Button onClick={props.mystate?.addNum2}>addNum2</Button>
+            <p>num1={myState.num1}</p>
+            <p>num2={myState.num2}</p>
+            <p>total={myState.total}</p>
+            <Button onClick={myState.addNum1}>addNum1</Button>
+            <Button onClick={myState.addNum2}>addNum2</Button>
         </div>
     )
-}))
+}
 
-export default UseMobx
+export default inject(myState)(observer(UseMobx))

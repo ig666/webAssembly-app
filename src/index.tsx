@@ -3,16 +3,11 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import MyState from './store/countNum'
-import { Provider } from 'mobx-react'
-
-const mystate = new MyState()
 
 ReactDOM.render(
-  <Provider mystate={mystate}>
+  <React.StrictMode>
     <App />
-  </Provider>
-  ,
+  </React.StrictMode>,
   document.getElementById('root')
 );
 
