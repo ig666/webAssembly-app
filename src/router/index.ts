@@ -8,5 +8,4 @@ context.keys().forEach((key) => {
   Routers = Routers.concat(item)
 });
 
-console.log(Routers)
 export default Routers;
