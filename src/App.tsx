@@ -12,6 +12,13 @@ function App() {
         <AppRouter />
       </div>
     </Provider>
+      // <Provider { ...store }>
+      //   <div className="App">
+      //     {/* <ShowCard />
+      //   <StressTest /> */ }
+      //     <UseMobx/>
+      //   </div>
+      // </Provider>
   );
 }
 
