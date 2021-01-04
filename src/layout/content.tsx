@@ -14,7 +14,7 @@ const Contents: FC = () => {
                 return rednderRoute(item.childrens)
             } else {
                 if (permissionList.includes(item.path)) {
-                    return <Route data-f={item.fPath} key={item.path} path={item.path} exact component={item.component}></Route>
+                    return <Route  key={item.path} path={item.path} exact component={item.component}></Route>
                 }
             }
         })
