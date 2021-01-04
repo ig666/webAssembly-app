@@ -3,7 +3,7 @@ class MyState {
     @observable public num1 = 0;
     @observable public num2 = 100;
     @action public addNum1 = () => {
-        this.num1 += 1;
+        this.num1 = 5   ;
     };
     @action public addNum2 = () => {
         this.num2 += 1;
