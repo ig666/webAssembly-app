@@ -1,9 +1,9 @@
-import React, { FC } from 'react'
+import React, { Children, FC } from 'react'
 import { Layout, Menu } from 'antd'
 import { createFromIconfontCN } from '@ant-design/icons';
 import { permissionList } from '../mock/permissions'
 import Routers from '../router/index'
-import { Link,useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 const IconFont = createFromIconfontCN({
     scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
 });
@@ -11,14 +11,20 @@ const { Sider } = Layout;
 const { SubMenu } = Menu
 
 const Siders: FC = () => {
-    console.log('join')
+    console.log(useLocation())
     //根据后端返回对菜单排序
     const sortMenu = (Routers: shouldRenderProps[]) => {
         let arr = []
         for (let item of permissionList) {
             for (let menu of Routers) {
                 if (item === menu.path) {
-                    arr.push(menu)
+                    if (!menu.childrens) {
+                        arr.push(menu)
+                    } else {
+                        let childrens = sortMenu(menu.childrens)
+                        menu.childrens = childrens
+                        arr.push(menu)
+                    }
                 }
             }
         }

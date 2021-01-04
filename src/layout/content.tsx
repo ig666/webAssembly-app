@@ -8,13 +8,13 @@ import Routers from '../router/index'
 const { Content } = Layout;
 const Contents: FC = () => {
     //根据后端permissionList动态载入组件
-    const rednderRoute = (routes: shouldRenderProps[]) => {
+    const rednderRoute = (routes: shouldRenderProps[]): any => {
         return routes.map(item => {
             if (item.childrens) {
-                rednderRoute(item.childrens)
+                return rednderRoute(item.childrens)
             } else {
                 if (permissionList.includes(item.path)) {
-                    return <Route key={item.path} path={item.path} exact component={item.component}></Route>
+                    return <Route data-f={item.fPath} key={item.path} path={item.path} exact component={item.component}></Route>
                 }
             }
         })

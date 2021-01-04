@@ -3,6 +3,7 @@ import './App.less';
 import { Provider } from 'mobx-react';
 import { CreateStores } from './store/createStores'
 import AppRouter from './layout/index'
+import UseMobx from './components/useMobx'
 
 function App() {
   const store = CreateStores()
