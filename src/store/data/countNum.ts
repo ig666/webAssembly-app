@@ -1,5 +1,8 @@
-import { action, computed, observable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 class MyState {
+    constructor() {
+        makeObservable(this);
+    }
     @observable public num1 = 0;
     @observable public num2 = 100;
     @action public addNum1 = () => {
