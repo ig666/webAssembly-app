@@ -9,11 +9,13 @@ const IconFont = createFromIconfontCN({
 });
 const { Sider } = Layout;
 const { SubMenu } = Menu;
-interface LocationProps {
+
+interface props {
   fPath?: string
 }
+
 const Siders: FC = () => {
-  const selectPath = useHistory<LocationProps>().location;
+  const selectPath = useHistory<props>().location;
   const defaultOpenKeys = [selectPath.state.fPath ? selectPath.state.fPath : '']
   //根据后端返回对菜单排序
   const sortMenu = (Routers: shouldRenderProps[]) => {
