@@ -3,7 +3,7 @@ import { Layout, Menu } from "antd";
 import { createFromIconfontCN } from "@ant-design/icons";
 import { permissionList } from "../mock/permissions";
 import Routers from "../router/index";
-import { Link, useLocation, } from "react-router-dom";
+import { Link, useHistory, } from "react-router-dom";
 const IconFont = createFromIconfontCN({
   scriptUrl: "//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js",
 });
@@ -13,8 +13,7 @@ interface LocationProps {
   fPath?: string
 }
 const Siders: FC = () => {
-  console.log('join')
-  const selectPath = useLocation<LocationProps>();
+  const selectPath = useHistory<LocationProps>().location;
   const defaultOpenKeys = [selectPath.state.fPath ? selectPath.state.fPath : '']
   //根据后端返回对菜单排序
   const sortMenu = (Routers: shouldRenderProps[]) => {
