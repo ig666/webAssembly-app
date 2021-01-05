@@ -3,18 +3,19 @@ import { Layout, Menu } from "antd";
 import { createFromIconfontCN } from "@ant-design/icons";
 import { permissionList } from "../mock/permissions";
 import Routers from "../router/index";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, } from "react-router-dom";
 const IconFont = createFromIconfontCN({
   scriptUrl: "//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js",
 });
 const { Sider } = Layout;
 const { SubMenu } = Menu;
-interface LinkProps{
-  fPath?:string
+interface LocationProps {
+  fPath?: string
 }
 const Siders: FC = () => {
-  console.log("join", useLocation());
-  const selectPath = useLocation();
+  console.log('join')
+  const selectPath = useLocation<LocationProps>();
+  const defaultOpenKeys = [selectPath.state.fPath ? selectPath.state.fPath : '']
   //根据后端返回对菜单排序
   const sortMenu = (Routers: shouldRenderProps[]) => {
     let arr = [];
@@ -42,11 +43,11 @@ const Siders: FC = () => {
             key={item.path}
             icon={item.icon && <IconFont type={item.icon} />}
           >
-            <Link<LinkProps>
+            <Link
               replace
               to={{
                 pathname: item.path,
-                state: { fPath: item.fPath},
+                state: item.fPath ? { fPath: item.fPath } : '',
               }}
             >
               {item.title}
@@ -72,7 +73,7 @@ const Siders: FC = () => {
       <Menu
         theme="dark"
         mode="inline"
-        // defaultOpenKeys={[selectPath.state]}
+        defaultOpenKeys={defaultOpenKeys}
         defaultSelectedKeys={[selectPath.pathname]}
       >
         {renderMenu(sortMenu(Routers))}
