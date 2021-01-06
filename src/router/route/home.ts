@@ -5,6 +5,7 @@ const Homes:shouldRenderProps[]= [
         path:'/',
         icon:'icon-tuichu',
         title:"首页",
+        auth:true,
         component:Home
     },
 ]
