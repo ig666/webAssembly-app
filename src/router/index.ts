@@ -7,5 +7,4 @@ context.keys().forEach((key) => {
   let item = context(key).default;
   Routers = Routers.concat(item)
 });
-
 export default Routers;

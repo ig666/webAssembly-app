@@ -3,7 +3,7 @@ import { Layout, Menu } from "antd";
 import { createFromIconfontCN } from "@ant-design/icons";
 import { permissionList } from "../mock/permissions";
 import Routers from "../router/index";
-import { Link, useHistory, } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 const IconFont = createFromIconfontCN({
   scriptUrl: "//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js",
 });
@@ -11,12 +11,14 @@ const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 interface props {
-  fPath?: string
+  fPath?: string;
 }
 
 const Siders: FC = () => {
   const selectPath = useHistory<props>().location;
-  const defaultOpenKeys = [selectPath.state.fPath ? selectPath.state.fPath : '']
+  const defaultOpenKeys = [
+    selectPath.state && selectPath.state.fPath ? selectPath.state.fPath : "",
+  ];
   //根据后端返回对菜单排序
   const sortMenu = (Routers: shouldRenderProps[]) => {
     let arr = [];
@@ -38,7 +40,7 @@ const Siders: FC = () => {
   //根据后端返回permissionList动态加载路由
   const renderMenu = (Routers: shouldRenderProps[]) => {
     return Routers.map((item) => {
-      if (!item.childrens) {
+      if (!item.childrens && !item.hidden) {
         return (
           <Menu.Item
             key={item.path}
@@ -48,14 +50,14 @@ const Siders: FC = () => {
               replace
               to={{
                 pathname: item.path,
-                state: item.fPath ? { fPath: item.fPath } : '',
+                state: item.fPath ? { fPath: item.fPath } : "",
               }}
             >
               {item.title}
             </Link>
           </Menu.Item>
         );
-      } else {
+      } else if (item.childrens && !item.hidden) {
         return (
           <SubMenu
             key={item.path}

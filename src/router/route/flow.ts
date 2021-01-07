@@ -11,12 +11,14 @@ const Flows:shouldRenderProps[]= [
                 fPath:'/flow',
                 path:'/flow/list',
                 title:"流量列表",
+                auth:true,
                 component:FlowList
             },
             {
                 fPath:'/flow',
                 path:'/flow/oder',
                 title:"流量账单",
+                auth:true,
                 component:FlowOrder
             }
         ]

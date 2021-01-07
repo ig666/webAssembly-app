@@ -28,4 +28,4 @@ const Contents: FC = () => {
     )
 }
 
-export default Contents
+export default Contents;
