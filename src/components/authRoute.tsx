@@ -7,7 +7,7 @@
 import React, { FC } from "react";
 
 import { Redirect, Route, RouteProps } from "react-router-dom";
-
+import EntireRoute from '../router/entireRoute'
 interface Props {
   routeData: shouldRenderProps[];
 }
@@ -18,13 +18,14 @@ const AuthRoute: FC<AuthRouteProps> = (props) => {
   const isLogin = localStorage.getItem("isLogin");
   //当前路径所在的路由item信息
   const targetRouteObj = routeData.find((item) => item.path === pathname);
+  //顶级路由信息
+  const entireRouteObj = EntireRoute.find((item) => item.path === pathname)
   //未登录，路径存在，且不需要拦截则直接进入该页面
   if (targetRouteObj && !targetRouteObj.auth && !isLogin) {
     let { component } = targetRouteObj;
 
     return <Route path={pathname} component={component}></Route>;
   }
-
   //登录
   if (isLogin) {
     // 如果要进入登录页面
@@ -42,7 +43,7 @@ const AuthRoute: FC<AuthRouteProps> = (props) => {
       }
     }
   } else {
-    if (targetRouteObj && targetRouteObj.auth) {
+    if ((targetRouteObj && targetRouteObj.auth) || entireRouteObj) {
       return <Redirect to="/login" />;
     } else {
       return <Redirect to="/404" />;

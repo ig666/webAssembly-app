@@ -1,25 +1,18 @@
 import React, { FC } from 'react'
-import Footers from './footer'
-import Contents from './content'
-import Siders from './sider'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { Layout } from 'antd';
-
-const { Header } = Layout;
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import EntireRoute from '../router/entireRoute'
+import Content from '../layout/content'
 
 const AppRouter: FC = () => {
     return (
         <Router>
             <Switch>
-                {/* <Route path='/login' component={}> */}
-                <Layout style={{ height: '100%' }}>
-                    <Siders />
-                    <Layout>
-                        <Header className="site-layout-sub-header-background" style={{ padding: 0 }} />
-                        <Contents />
-                        <Footers />
-                    </Layout>
-                </Layout>
+                {
+                    EntireRoute.map((item, index) => {
+                        return <Route exact key={index} path={item.path} component={item.component}></Route>
+                    })
+                }
+                <Route path='/' component={Content} ></Route>
             </Switch>
         </Router>
     )
