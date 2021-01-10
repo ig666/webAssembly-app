@@ -71,13 +71,16 @@ const Siders: FC = () => {
     });
   };
   return (
-    <Sider breakpoint="lg" collapsedWidth="0">
+    <Sider
+      breakpoint="lg"
+      collapsedWidth="0"
+    >
       <div className="logo" />
       <Menu
         theme="dark"
         mode="inline"
         defaultOpenKeys={defaultOpenKeys}
-        defaultSelectedKeys={[selectPath.pathname]}
+        selectedKeys={[selectPath.pathname]}
       >
         {renderMenu(sortMenu(Routers))}
       </Menu>

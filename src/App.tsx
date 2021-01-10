@@ -1,25 +1,29 @@
-import React from 'react';
-import './App.less';
-import { Provider } from 'mobx-react';
-import { CreateStores } from './store/createStores'
-import AppRouter from './layout/index'
-import UseMobx from './components/useMobx'
+import React from "react";
+import "./App.less";
+import { Provider } from "mobx-react";
+import { CreateStores } from "./store/createStores";
+import AppRouter from "./layout/index";
+import { ThemeProvider } from "@material-ui/styles";
+
+const theme={
+  color:'#f1939c'
+}
+/**
+ * @描述
+ * @ThemeProvider 全局样式容器
+ * @Provider 全局状态容器
+ */
 
 function App() {
-  const store = CreateStores()
+  const store = CreateStores();
   return (
-    <Provider {...store}>
-      <div className='App'>
-        <AppRouter />
-      </div>
-    </Provider>
-      // <Provider { ...store }>
-      //   <div className="App">
-      //     {/* <ShowCard />
-      //   <StressTest /> */ }
-      //     <UseMobx/>
-      //   </div>
-      // </Provider>
+    <ThemeProvider theme={theme}>
+      <Provider {...store}>
+        <div className="App">
+          <AppRouter />
+        </div>
+      </Provider>
+    </ThemeProvider>
   );
 }
 

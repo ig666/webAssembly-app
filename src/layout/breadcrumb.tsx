@@ -1,19 +1,42 @@
-import React, { FC } from 'react'
-import { Breadcrumb } from 'antd';
+import React, { FC } from "react";
+import { Breadcrumb } from "antd";
+import { useLocation, Link } from "react-router-dom";
+import Routers from "../router";
+import { treeToList } from "../utils";
 
+let list = treeToList(Routers);
 const Breadcrumbs: FC = () => {
+  const pathSnippets = useLocation()
+    .pathname.split("/")
+    .filter((i) => i);
+  const extraBreadcrumbItems = pathSnippets.map((_, index) => {
+    const url = `/${pathSnippets.slice(0, index + 1).join("/")}`;
     return (
-        <Breadcrumb>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>
-                <a href="">Application Center</a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>
-                <a href="">Application List</a>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>An Application</Breadcrumb.Item>
-        </Breadcrumb>
-    )
-}
+      <Breadcrumb.Item key={url}>
+        {list.map((item) => {
+          if (item.path === url && item.childrens) {
+            return (
+              <Link key={url} to={item.childrens[0].path}>
+                {item.title}
+              </Link>
+            );
+          } else if (item.path === url) {
+            return (
+              <Link key={url} to={item.path}>
+                {item.title}
+              </Link>
+            );
+          }
+        })}
+      </Breadcrumb.Item>
+    );
+  });
+  const breadcrumbItems = [
+    <Breadcrumb.Item key="home">
+      <Link to="/">主页</Link>
+    </Breadcrumb.Item>,
+  ].concat(extraBreadcrumbItems);
+  return <Breadcrumb>{breadcrumbItems}</Breadcrumb>;
+};
 
-export default Breadcrumbs
+export default Breadcrumbs;

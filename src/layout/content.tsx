@@ -1,11 +1,12 @@
 import React, { FC } from "react";
 import { permissionList } from "../mock/permissions";
 import { Switch } from "react-router-dom";
-import Siders from './sider'
+import Siders from "./sider";
 import Routers from "../router/index";
 import AuthRoute from "../components/authRoute";
-import { Layout } from 'antd';
-import Footers from './footer'
+import Breadcrumbs from "./breadcrumb";
+import { Layout } from "antd";
+import Footers from "./footer";
 
 const { Content, Header } = Layout;
 const Contents: FC = () => {
@@ -24,10 +25,19 @@ const Contents: FC = () => {
   };
   rednderRoute(Routers);
   return (
-    <Layout style={{ height: '100%' }}>
+    <Layout style={{ height: "100%" }}>
       <Siders />
       <Layout>
-        <Header className="site-layout-sub-header-background" style={{ padding: 0 }} />
+        <Header
+          className="site-layout-sub-header-background"
+          style={{
+            padding: 0,
+            backgroundColor: "white",
+            boxShadow: "0 1px 4px rgba(0,21,41,.08)",
+          }}
+        >
+          <Breadcrumbs />
+        </Header>
         <Content style={{ margin: "24px 16px 0" }}>
           <div
             className="site-layout-background"
