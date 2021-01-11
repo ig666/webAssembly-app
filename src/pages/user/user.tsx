@@ -17,7 +17,7 @@ const User: FC<RouteChildrenProps> = (props) => {
         return () => { lot.stop() }
     }, [])
     return (
-        <div ref={node} style={{ height: '500px' }}></div>
+        <div ref={node} style={{ height: '70vh' }}></div>
     )
 }
 

@@ -4,11 +4,12 @@ import { Switch } from "react-router-dom";
 import Siders from "./sider";
 import Routers from "../router/index";
 import AuthRoute from "../components/authRoute";
-import Breadcrumbs from "./breadcrumb";
+import Headers from './header'
+
 import { Layout } from "antd";
 import Footers from "./footer";
 
-const { Content, Header } = Layout;
+const { Content } = Layout;
 const Contents: FC = () => {
   //根据后端permissionList动态载入组件
   let routeData: shouldRenderProps[] = [];
@@ -28,16 +29,7 @@ const Contents: FC = () => {
     <Layout style={{ height: "100%" }}>
       <Siders />
       <Layout>
-        <Header
-          className="site-layout-sub-header-background"
-          style={{
-            padding: 0,
-            backgroundColor: "white",
-            boxShadow: "0 1px 4px rgba(0,21,41,.08)",
-          }}
-        >
-          <Breadcrumbs />
-        </Header>
+        <Headers />
         <Content style={{ margin: "24px 16px 0" }}>
           <div
             className="site-layout-background"

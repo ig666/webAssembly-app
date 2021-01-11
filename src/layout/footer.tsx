@@ -3,7 +3,7 @@ import { Layout } from 'antd';
 const { Footer } = Layout;
 const Footers: FC = () => {
     return (
-        <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+        <Footer style={{ textAlign: 'center' }}>JieRuiMi.Top ©2021 Created by CQ </Footer>
     )
 }
 
