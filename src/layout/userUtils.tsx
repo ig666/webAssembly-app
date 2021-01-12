@@ -1,10 +1,11 @@
 import React, { FC, useState, useRef, useEffect } from "react";
-import { AutoComplete, Input } from "antd";
+import { AutoComplete, Input, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { makeStyles } from "@material-ui/styles";
 import Routers from "../router";
 import { treeToList } from "../utils";
 import { useHistory } from "react-router-dom";
+import { FullscreenOutlined, FullscreenExitOutlined } from "@ant-design/icons";
 
 interface props {
   width: string;
@@ -27,6 +28,34 @@ const UserUtils: FC = () => {
   const [showInput, setShowInput] = useState(false);
   const classes = useStyles({ width: showInput ? "15vw" : "0vw" });
   const [options, setOptions] = useState<{ value: string }[]>([]);
+  const history = useHistory();
+  const magnify = () => {
+    if (document.fullscreenElement) {
+      return (
+        <Button
+          onClick={() => {
+            document.exitFullscreen();
+          }}
+          style={{ marginLeft: 30 }}
+          type="primary"
+          shape="circle"
+          icon={<FullscreenExitOutlined />}
+        />
+      );
+    } else {
+      return (
+        <Button
+          onClick={() => {
+            document.documentElement.requestFullscreen();
+          }}
+          style={{ marginLeft: 30 }}
+          type="primary"
+          shape="circle"
+          icon={<FullscreenOutlined />}
+        />
+      );
+    }
+  };
   useEffect(() => {
     if (fourInput.current) {
       fourInput.current.focus();
@@ -41,9 +70,9 @@ const UserUtils: FC = () => {
     }
     setOptions(serachData);
   };
-  const OnSelect = (val: string) => {
+  const onSelect = (val: string) => {
     let goPath = list.filter((item) => item.title === val);
-    useHistory().push({pathname:goPath[0].path})
+    history.push(goPath[0].path, { fPath: goPath[0]?.fPath });
   };
   const renderSearch = () => {
     if (showInput) {
@@ -52,7 +81,7 @@ const UserUtils: FC = () => {
           options={options}
           className={classes.root}
           onSearch={onSearch}
-          onSelect={OnSelect}
+          onSelect={onSelect}
         >
           <Input
             ref={fourInput}
@@ -81,7 +110,7 @@ const UserUtils: FC = () => {
   return (
     <div className={classes.box}>
       {renderSearch()}
-      <span>111111</span>
+      {magnify()}
     </div>
   );
 };
