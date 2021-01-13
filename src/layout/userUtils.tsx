@@ -99,7 +99,7 @@ const UserUtils: FC = () => {
           onClick={() => {
             setShowInput(true);
           }}
-          style={{ fontSize: 15 }}
+          style={{ fontSize: 15, cursor: 'pointer' }}
         >
           <SearchOutlined />
           <span style={{ marginLeft: 15, color: "#BFBFBF" }}>搜索</span>
