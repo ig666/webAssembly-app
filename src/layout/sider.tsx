@@ -36,6 +36,23 @@ const Siders: FC = () => {
     }
     return arr;
   };
+  //是否返回导航按钮
+  const shouldReturnLink = (item: shouldRenderProps) => {
+    if (item.path !== selectPath.pathname) {
+      return (
+        <Link
+          to={{
+            pathname: item.path,
+            state: item.fPath ? { fPath: item.fPath } : "",
+          }}
+        >
+          {item.title}
+        </Link>
+      );
+    } else {
+      return <span style={{ cursor: "pointer" }}>{item.title}</span>;
+    }
+  };
   //根据后端返回permissionList动态加载路由
   const renderMenu = (Routers: shouldRenderProps[]) => {
     return Routers.map((item) => {
@@ -45,15 +62,7 @@ const Siders: FC = () => {
             key={item.path}
             icon={item.icon && <IconFont type={item.icon} />}
           >
-            <Link
-              replace
-              to={{
-                pathname: item.path,
-                state: item.fPath ? { fPath: item.fPath } : "",
-              }}
-            >
-              {item.title}
-            </Link>
+            {shouldReturnLink(item)}
           </Menu.Item>
         );
       } else if (item.childrens && !item.hidden) {
