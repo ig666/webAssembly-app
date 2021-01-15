@@ -9,6 +9,7 @@ const Breadcrumbs: FC = () => {
   const pathSnippets = useLocation()
     .pathname.split("/")
     .filter((i) => i);
+  const length = pathSnippets.length
   const extraBreadcrumbItems = pathSnippets.map((_, index) => {
     const url = `/${pathSnippets.slice(0, index + 1).join("/")}`;
     return (
@@ -20,13 +21,16 @@ const Breadcrumbs: FC = () => {
                 {item.title}
               </Link>
             );
-          } else if (item.path === url) {
+          } else if (item.path === url && (index + 1) !== length) {
             return (
               <Link key={url} to={item.path}>
                 {item.title}
               </Link>
             );
+          } else if(item.path === url){
+            return <span key={url}>{item.title}</span>
           }
+          return undefined
         })}
       </Breadcrumb.Item>
     );
