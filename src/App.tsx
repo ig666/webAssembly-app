@@ -4,12 +4,15 @@ import { Provider } from "mobx-react";
 import { CreateStores } from "./store/createStores";
 import AppRouter from "./layout/index";
 import { ThemeProvider } from "@material-ui/styles";
+import { UseRequestProvider } from 'ahooks'
+import 'nprogress/nprogress.css'
 
-const theme={
-  color:'#f1939c'
+const theme = {
+  color: '#f1939c'
 }
 /**
  * @描述
+ * @UseRequestProvider 全局请求(useRequest)配置
  * @ThemeProvider 全局样式容器
  * @Provider 全局状态容器
  */
@@ -17,13 +20,17 @@ const theme={
 function App() {
   const store = CreateStores();
   return (
-    <ThemeProvider theme={theme}>
-      <Provider {...store}>
-        <div className="App">
-          <AppRouter />
-        </div>
-      </Provider>
-    </ThemeProvider>
+    <UseRequestProvider value={{
+      refreshOnWindowFocus: true
+    }}>
+      <ThemeProvider theme={theme}>
+        <Provider {...store}>
+          <div className="App">
+            <AppRouter />
+          </div>
+        </Provider>
+      </ThemeProvider>
+    </UseRequestProvider>
   );
 }
 

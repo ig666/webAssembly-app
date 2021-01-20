@@ -15,7 +15,7 @@ type AuthRouteProps = Props & RouteProps;
 const AuthRoute: FC<AuthRouteProps> = (props) => {
   let { location, routeData } = props;
   let pathname = location?.pathname;
-  const isLogin = localStorage.getItem("isLogin");
+  const isLogin = localStorage.getItem("authToken");
   //当前路径所在的路由item信息
   const targetRouteObj = routeData.find((item) => item.path === pathname);
   //顶级路由信息
