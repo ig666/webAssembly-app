@@ -9,7 +9,7 @@ import lottie from 'lottie-web'
 import loadingJson from '../../animationJson/42740-new-year-with-social-distancing.json'
 import { useRequest } from 'ahooks';
 import { handleService } from '../../utils/request'
-import '../../utils/ice'
+// import '../../utils/ice'
 interface props {
     bg: string
 }

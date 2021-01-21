@@ -1,15 +1,23 @@
-import React, { FC } from 'react'
-import { Result, Button } from 'antd';
-import { SmileOutlined } from '@ant-design/icons';
+import React, { FC, useEffect, useRef } from 'react'
 import { RouteChildrenProps } from 'react-router-dom'
+import lottie from 'lottie-web'
+import animationJsonData from '../../animationJson/45056-contact-us.json'
 
 const Home: FC<RouteChildrenProps> = (props) => {
+  const node = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+      const lot = lottie.loadAnimation({
+          container: node.current!,
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
+          animationData: animationJsonData
+      })
+      lot.play()
+      return () => { lot.stop() }
+  }, [])
     return (
-        <Result
-        icon={<SmileOutlined />}
-        title="Great, we have done all the operations!"
-        extra={<Button type="primary">Next</Button>}
-      />
+      <div ref={node} style={{ height: '70vh' }}></div>
     )
 }
 

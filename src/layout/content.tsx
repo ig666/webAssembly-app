@@ -31,7 +31,7 @@ const Contents: FC = () => {
       <Siders />
       <Layout>
         <Headers />
-        <Content style={{ margin: "24px 16px 0" }}>
+        <Content>
           <div
             className="site-layout-background"
             style={{ padding: 24, minHeight: 360 }}
