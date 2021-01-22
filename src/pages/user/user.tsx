@@ -2,10 +2,18 @@ import { Card } from "antd";
 import { FC, useState } from "react";
 import { Form, Row, Col, Input, Button } from "antd";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
+import { useRequest } from "ahooks";
+import { handleService } from "../../utils/request";
 
 const User: FC = () => {
   const [expand, setExpand] = useState(false);
   const [form] = Form.useForm();
+  const { loading, run } = useRequest(handleService, {
+    manual: true,
+    onSuccess: (result: any) => {
+      console.log(result);
+    },
+  });
 
   const getFields = () => {
     const count = expand ? 10 : 6;
@@ -33,6 +41,11 @@ const User: FC = () => {
 
   const onFinish = (values: any) => {
     console.log("Received values of form: ", values);
+    run({
+      data: { pageIndex: 1, pageSize: 2 },
+      method: "GET",
+      url: "getListBypage",
+    });
   };
   const formSearch = () => {
     return (
