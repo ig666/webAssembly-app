@@ -5,7 +5,7 @@
     "noImplicitAny": true,
     "noImplicitThis": true,
     "strictNullChecks": true,
-    "experimentalDecorators":true, //启用装饰器 @name
+    "experimentalDecorators": true, //启用装饰器 @name
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -20,7 +20,5 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": [
-    "src"
-, "types", "src/mock"  ]
+  "include": ["src", "types", "src/mock"]
 }

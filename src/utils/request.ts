@@ -16,7 +16,7 @@ request.interceptors.request.use(
     NProgress.start();
     const token = localStorage.getItem("authToken");
     if (token) {
-      config.headers.Authorization = token;
+      config.headers.Authorization = 'Bearer ' + token;
     }
     return config;
   },
@@ -32,7 +32,7 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   response => {
     NProgress.done();
-    if(response.data.code!==0){
+    if (response.data.code !== 0) {
       message.warn(response.data.message);
       return
     }

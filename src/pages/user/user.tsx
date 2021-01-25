@@ -1,48 +1,39 @@
 import { Card } from "antd";
 import { FC, useState } from "react";
-import { Form, Row, Col, Input, Button } from "antd";
+import { Form, Row, Col, Input, Button, Table } from "antd";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import { useRequest } from "ahooks";
 import { handleService } from "../../utils/request";
+const { Column } = Table;
 
 const User: FC = () => {
   const [expand, setExpand] = useState(false);
   const [form] = Form.useForm();
-  const { loading, run } = useRequest(handleService, {
+  const { data, loading, run } = useRequest(handleService, {
     manual: true,
-    onSuccess: (result: any) => {
-      console.log(result);
+    formatResult: (result: any) => {
+      const { data } = result;
+      return data.list.map((item: any, index: number) => {
+        item.key = index;
+        return item;
+      });
     },
   });
 
   const getFields = () => {
-    const count = expand ? 10 : 6;
-    const children = [];
-    for (let i = 0; i < count; i++) {
-      children.push(
-        <Col span={8} key={i}>
-          <Form.Item
-            name={`field-${i}`}
-            label={`Field ${i}`}
-            rules={[
-              {
-                required: true,
-                message: "Input something!",
-              },
-            ]}
-          >
-            <Input placeholder="placeholder" />
-          </Form.Item>
-        </Col>
-      );
-    }
+    let children = (
+      <Col span={8}>
+        <Form.Item name="username" label="用户名称:">
+          <Input placeholder="请输入用户名称" />
+        </Form.Item>
+      </Col>
+    );
     return children;
   };
 
   const onFinish = (values: any) => {
-    console.log("Received values of form: ", values);
     run({
-      data: { pageIndex: 1, pageSize: 2 },
+      data: { pageIndex: 1, pageSize: 2, ...values },
       method: "GET",
       url: "getListBypage",
     });
@@ -59,7 +50,7 @@ const User: FC = () => {
         <Row>
           <Col span={24} style={{ textAlign: "right" }}>
             <Button type="primary" htmlType="submit">
-              Search
+              查询
             </Button>
             <Button
               style={{ margin: "0 8px" }}
@@ -67,7 +58,7 @@ const User: FC = () => {
                 form.resetFields();
               }}
             >
-              Clear
+              重置
             </Button>
             <Button
               type="text"
@@ -76,14 +67,23 @@ const User: FC = () => {
                 setExpand(!expand);
               }}
             >
-              {expand ? <UpOutlined /> : <DownOutlined />} Collapse
+              {expand ? <UpOutlined /> : <DownOutlined />} 高级搜索
             </Button>
           </Col>
         </Row>
       </Form>
     );
   };
-  return <Card>{formSearch()}</Card>;
+  return (
+    <Card>
+      {formSearch()}
+      <Table dataSource={data}>
+        <Column title="姓名" dataIndex="username" key="age" />
+        <Column title="性别" dataIndex="gender" key="gender" />
+        <Column title="昵称" dataIndex="nickname" key="nickname" />
+      </Table>
+    </Card>
+  );
 };
 
 export default User;
