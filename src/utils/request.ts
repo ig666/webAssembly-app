@@ -1,22 +1,21 @@
 import axios, { Method } from "axios";
 import { message } from "antd";
 import NProgress from "nprogress";
-import { useHistory } from 'react-router'
-
+import { useHistory } from "react-router";
 
 const request = axios.create({
-  timeout: 15000
+  timeout: 15000,
 });
 /**
  * 请求前拦截
  * 用于处理需要在请求前的操作
  */
 request.interceptors.request.use(
-  config => {
+  (config) => {
     NProgress.start();
     const token = localStorage.getItem("authToken");
     if (token) {
-      config.headers.Authorization = 'Bearer ' + token;
+      config.headers.Authorization = "Bearer " + token;
     }
     return config;
   },
@@ -30,15 +29,15 @@ request.interceptors.request.use(
  * 用于处理需要在请求返回后的操作
  */
 request.interceptors.response.use(
-  response => {
+  (response) => {
     NProgress.done();
     if (response.data.code !== 0) {
       message.warn(response.data.message);
-      return
+      return;
     }
-    return response.data
+    return response.data;
   },
-  error => {
+  (error) => {
     NProgress.done();
     // 断网 或者 请求超时 状态
     if (!error.response) {
@@ -51,9 +50,9 @@ request.interceptors.response.use(
       return;
     }
     if (error.response.status === 401) {
-      const history = useHistory()
-      localStorage.setItem("authToken", '');
-      history.push('/login')
+      const history = useHistory();
+      localStorage.setItem("authToken", "");
+      history.push("/login");
     } else if (error.response.status === 500) {
       message.warning(error.response.data.message);
     } else if (error.response.status === 405) {
@@ -64,23 +63,23 @@ request.interceptors.response.use(
 );
 
 interface serviceProps {
-  data: any,
-  url: string,
-  method: Method,
+  data: any;
+  url: string;
+  method: Method;
 }
 
 export function handleService(service: serviceProps) {
   if (service.method === "GET") {
     return request({
-      url: "http://10.98.6.97:8080/" + service.url,
+      url: "http://localhost:8080/" + service.url,
       params: service.data,
-      method: service.method
+      method: service.method,
     });
   } else {
     return request({
-      url: "http://10.98.6.97:8080/" + service.url,
+      url: "http://localhost:8080/" + service.url,
       data: service.data,
-      method: service.method
+      method: service.method,
     });
   }
 }
