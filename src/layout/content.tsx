@@ -27,14 +27,14 @@ const Contents: FC = () => {
   };
   rednderRoute(Routers);
   return (
-    <Layout style={{ height: "100%" }}>
+    <Layout style={{ minHeight:'100vh' }}>
       <Siders />
       <Layout>
         <Headers />
         <Content>
           <div
             className="site-layout-background"
-            style={{ padding: 24, minHeight: 360 }}
+            style={{ padding: '10px 24px 0px 24px', minHeight: 360 }}
           >
             <Switch>
               {routeData.map((item: any, index: number) => {

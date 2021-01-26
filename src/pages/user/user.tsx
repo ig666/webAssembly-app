@@ -1,25 +1,43 @@
 import { Card } from "antd";
 import { FC, useState } from "react";
 import { Form, Row, Col, Input, Button, Table } from "antd";
-import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import { useRequest } from "ahooks";
 import { handleService } from "../../utils/request";
+
+interface UserProps {
+  key: number;
+  gender: number;
+  username: string;
+  nickname: string;
+}
+
 const { Column } = Table;
 
 const User: FC = () => {
-  const [expand, setExpand] = useState(false);
+  const [searchData, setSearchData] = useState({});
   const [form] = Form.useForm();
-  const { data, loading, run } = useRequest(handleService, {
-    manual: true,
-    formatResult: (result: any) => {
-      const { data } = result;
-      return data.list.map((item: any, index: number) => {
-        item.key = index;
-        return item;
+  const { tableProps, refresh } = useRequest(
+    ({ current, pageSize }) => {
+      return handleService({
+        data: { pageSize, pageIndex: current, ...searchData },
+        url: "getListBypage",
+        method: "GET",
       });
     },
-  });
-
+    {
+      refreshOnWindowFocus: false,
+      paginated: true,
+      refreshDeps: [searchData],
+      formatResult: (result: any) => {
+        const { data } = result;
+        data.list = data.list.map((item: any, index: number) => {
+          item.key = index;
+          return item;
+        });
+        return data;
+      },
+    }
+  );
   const getFields = () => {
     let children = (
       <Col span={8}>
@@ -30,13 +48,8 @@ const User: FC = () => {
     );
     return children;
   };
-
   const onFinish = (values: any) => {
-    run({
-      data: { pageIndex: 1, pageSize: 2, ...values },
-      method: "GET",
-      url: "getListBypage",
-    });
+    setSearchData(values);
   };
   const formSearch = () => {
     return (
@@ -60,24 +73,22 @@ const User: FC = () => {
             >
               重置
             </Button>
-            <Button
-              type="text"
-              style={{ fontSize: 12 }}
-              onClick={() => {
-                setExpand(!expand);
-              }}
-            >
-              {expand ? <UpOutlined /> : <DownOutlined />} 高级搜索
-            </Button>
           </Col>
         </Row>
       </Form>
     );
   };
+  const formatterPagination = () => {
+    tableProps.pagination.responsive = true;
+    tableProps.pagination.showSizeChanger = true;
+    tableProps.pagination.showQuickJumper = true;
+    tableProps.pagination.showTotal=(total, range) => `${range[0]}-${range[1]} of ${total} items`
+    return tableProps;
+  };
   return (
     <Card>
       {formSearch()}
-      <Table dataSource={data}>
+      <Table<UserProps> {...formatterPagination()} scroll={{scrollToFirstRowOnChange:true}}>
         <Column title="姓名" dataIndex="username" key="age" />
         <Column title="性别" dataIndex="gender" key="gender" />
         <Column title="昵称" dataIndex="nickname" key="nickname" />

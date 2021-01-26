@@ -1,10 +1,12 @@
-import React, { FC } from 'react'
-import { Layout } from 'antd';
+import React, { FC } from "react";
+import { Layout } from "antd";
 const { Footer } = Layout;
 const Footers: FC = () => {
-    return (
-        <Footer style={{ textAlign: 'center' }}>JieRuiMi.Top ©2021 Created by CQ </Footer>
-    )
-}
+  return (
+    <Footer style={{ textAlign: "center", paddingBottom: 12, paddingTop: 12 }}>
+      JieRuiMi.Top ©2021 Created by CQ
+    </Footer>
+  );
+};
 
-export default Footers
+export default Footers;

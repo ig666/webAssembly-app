@@ -21,9 +21,8 @@ interface userProps {
 const useStyle = makeStyles({
     root: (props: props) => (
         {
-            height: '100%',
+            minHeight: '100vh',
             background: `url(${props.bg}) no-repeat `,
-            backgroundSize: "100%",
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
