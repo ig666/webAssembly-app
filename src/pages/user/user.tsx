@@ -11,8 +11,8 @@ interface UserProps {
   nickname: string;
 }
 enum gender {
-  "男" = 1,
-  "女" = 2,
+  男 = 1,
+  女 = 2,
 }
 
 const { Column } = Table;
