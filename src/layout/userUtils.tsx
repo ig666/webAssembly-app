@@ -21,6 +21,7 @@ const useStyles = makeStyles({
   box: {
     display: "flex",
     alignItems: "center",
+    zIndex:1
   },
 });
 const UserUtils: FC = () => {

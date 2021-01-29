@@ -1,14 +1,18 @@
-import { Card } from "antd";
+import { Card, message } from "antd";
 import { FC, useState } from "react";
-import { Form, Row, Col, Input, Button, Table } from "antd";
+import { Form, Row, Col, Input, Button, Table, Space, Popconfirm } from "antd";
 import { useRequest } from "ahooks";
 import { handleService } from "../../utils/request";
+import dayjs from 'dayjs'
 
 interface UserProps {
+  id: string;
   key: number;
   gender: number;
   username: string;
   nickname: string;
+  createTime:string,
+  updateTime:string
 }
 enum gender {
   男 = 1,
@@ -20,7 +24,7 @@ const { Column } = Table;
 const User: FC = () => {
   const [searchData, setSearchData] = useState({});
   const [form] = Form.useForm();
-  const { tableProps } = useRequest(
+  const { tableProps, refresh } = useRequest(
     ({ current, pageSize }) => {
       return handleService({
         data: { pageSize, pageIndex: current, ...searchData },
@@ -29,19 +33,31 @@ const User: FC = () => {
       });
     },
     {
-      refreshOnWindowFocus: false,
+      debounceInterval: 300,
       paginated: true,
       refreshDeps: [searchData],
       formatResult: (result: any) => {
         const { data } = result;
-        data.list = data.list.map((item: any, index: number) => {
+        data.list = data.list.map((item: UserProps, index: number) => {
           item.key = index;
+          item.createTime=dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss')
+          item.updateTime=dayjs(item.updateTime).format('YYYY-MM-DD HH:mm:ss')
           return item;
         });
         return data;
       },
     }
   );
+  const { run } = useRequest(handleService, {
+    manual: true,
+    onSuccess: (result) => {
+      if (result) {
+        message.success("删除成功");
+        refresh();
+      }
+    },
+  });
+
   const getFields = () => {
     let children = (
       <Col span={8}>
@@ -90,21 +106,60 @@ const User: FC = () => {
       `${range[0]}-${range[1]} of ${total} items`;
     return tableProps;
   };
+  const deleteUser = (id: string) => {
+    run({ data: { id }, method: "DELETE", url: "deleteUser" });
+  };
+  const updateUser = (id: string) => {
+    console.log(id);
+  };
   return (
     <Card>
       {formSearch()}
       <Table<UserProps>
         {...formatterPagination()}
-        scroll={{ scrollToFirstRowOnChange: true }}
+        scroll={{ scrollToFirstRowOnChange: true, x: 1500, y: 550 }}
       >
-        <Column title="姓名" dataIndex="username" key="age" />
-        <Column
+        <Column<UserProps> title="姓名" dataIndex="username" key="age" />
+        <Column<UserProps>
           title="性别"
           dataIndex="gender"
           key="gender"
           render={(text) => <>{gender[text]}</>}
         />
-        <Column title="昵称" dataIndex="nickname" key="nickname" />
+        <Column<UserProps> title="昵称" dataIndex="nickname" key="nickname" />
+        <Column<UserProps> title="创建时间" dataIndex="createTime" key="createTime" />
+        <Column<UserProps> title="修改时间" dataIndex="updateTime" key="updateTime" />
+        <Column<UserProps>
+          title="操作"
+          width={200}
+          key="action"
+          fixed="right"
+          render={(text, record) => (
+            <Space size="middle">
+              <Button
+                type="primary"
+                onClick={() => {
+                  updateUser(record.id);
+                }}
+              >
+                编辑
+              </Button>
+              <Popconfirm
+                title="确认删除?"
+                onConfirm={() => {
+                  deleteUser(record.id);
+                }}
+                onCancel={() => {
+                  console.log("点击了取消");
+                }}
+                okText="确认"
+                cancelText="取消"
+              >
+                <Button>删除</Button>
+              </Popconfirm>
+            </Space>
+          )}
+        />
       </Table>
     </Card>
   );

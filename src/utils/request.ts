@@ -69,7 +69,7 @@ interface serviceProps {
 }
 
 export function handleService(service: serviceProps) {
-  if (service.method === "GET") {
+  if (service.method === "GET" || service.method === 'DELETE') {
     return request({
       url: "http://localhost:8080/" + service.url,
       params: service.data,
