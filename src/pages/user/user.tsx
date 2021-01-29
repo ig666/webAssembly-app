@@ -10,6 +10,10 @@ interface UserProps {
   username: string;
   nickname: string;
 }
+enum gender {
+  "男" = 1,
+  "女" = 2,
+}
 
 const { Column } = Table;
 
@@ -82,15 +86,24 @@ const User: FC = () => {
     tableProps.pagination.responsive = true;
     tableProps.pagination.showSizeChanger = true;
     tableProps.pagination.showQuickJumper = true;
-    tableProps.pagination.showTotal=(total, range) => `${range[0]}-${range[1]} of ${total} items`
+    tableProps.pagination.showTotal = (total, range) =>
+      `${range[0]}-${range[1]} of ${total} items`;
     return tableProps;
   };
   return (
     <Card>
       {formSearch()}
-      <Table<UserProps> {...formatterPagination()} scroll={{scrollToFirstRowOnChange:true}}>
+      <Table<UserProps>
+        {...formatterPagination()}
+        scroll={{ scrollToFirstRowOnChange: true }}
+      >
         <Column title="姓名" dataIndex="username" key="age" />
-        <Column title="性别" dataIndex="gender" key="gender" />
+        <Column
+          title="性别"
+          dataIndex="gender"
+          key="gender"
+          render={(text) => <>{gender[text]}</>}
+        />
         <Column title="昵称" dataIndex="nickname" key="nickname" />
       </Table>
     </Card>
