@@ -20,7 +20,7 @@ const { Column } = Table;
 const User: FC = () => {
   const [searchData, setSearchData] = useState({});
   const [form] = Form.useForm();
-  const { tableProps, refresh } = useRequest(
+  const { tableProps } = useRequest(
     ({ current, pageSize }) => {
       return handleService({
         data: { pageSize, pageIndex: current, ...searchData },
