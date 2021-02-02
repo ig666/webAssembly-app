@@ -10,25 +10,19 @@ import {
   Table,
   Space,
   Popconfirm,
-  Modal,
+  DatePicker,
 } from "antd";
 import { useRequest } from "ahooks";
 import { handleService } from "../../utils/request";
 import dayjs from "dayjs";
 
 const { Column } = Table;
+const { RangePicker } = DatePicker;
 
-enum gender {
-  男 = 1,
-  女 = 2,
-}
-
-const User: FC = () => {
+const PDF: FC = () => {
   //状态类
   const [searchData, setSearchData] = useState({});
-  const [modalVisible, setModalVisible] = useState(false);
   const [form] = Form.useForm();
-  const [modalForm] = Form.useForm();
   //请求类
   const { tableProps, refresh } = useRequest(
     ({ current, pageSize }) => {
@@ -68,25 +62,26 @@ const User: FC = () => {
       }
     },
   });
-  const modalRequest = useRequest(handleService, {
-    manual: true,
-    onSuccess: (result) => {
-      if (result) {
-        setModalVisible(false);
-        modalForm.resetFields();
-        message.success("编辑成功");
-        refresh();
-      }
-    },
-  });
   //方法类
   const getFields = () => {
     let children = (
-      <Col span={8}>
-        <Form.Item name="username" label="用户名称:">
-          <Input placeholder="请输入用户名称" />
-        </Form.Item>
-      </Col>
+      <>
+        <Col span={8}>
+          <Form.Item name="username" label="服务商名称:">
+            <Input placeholder="请输入服务商名称" />
+          </Form.Item>
+        </Col>
+        <Col span={8}>
+          <Form.Item name="username" label="服务人员名称:">
+            <Input placeholder="请输入服务人员名称" />
+          </Form.Item>
+        </Col>
+        <Col span={8}>
+          <Form.Item name="username" label="服务日期:">
+            <RangePicker style={{width:'100%'}} />
+          </Form.Item>
+        </Col>
+      </>
     );
     return children;
   };
@@ -127,23 +122,9 @@ const User: FC = () => {
       `${range[0]}-${range[1]} of ${total} items`;
     return tableProps;
   };
-  const updateUser = (row: any) => {
-    setModalVisible(() => {
-      modalForm.setFieldsValue(row);
-      return true;
-    });
-  };
   const renderAction = (text: string, record: UserProps) => {
     return (
       <Space size="middle">
-        <Button
-          type="primary"
-          onClick={() => {
-            updateUser(record);
-          }}
-        >
-          编辑
-        </Button>
         <Popconfirm
           title="确认删除?"
           onConfirm={() => {
@@ -174,12 +155,6 @@ const User: FC = () => {
         scroll={{ scrollToFirstRowOnChange: true, x: 1500, y: 550 }}
       >
         <Column title="姓名" dataIndex="username" key="age" />
-        <Column
-          title="性别"
-          dataIndex="gender"
-          key="gender"
-          render={(text) => <>{gender[text]}</>}
-        />
         <Column title="昵称" dataIndex="nickname" key="nickname" />
         <Column title="创建时间" dataIndex="createTime" key="createTime" />
         <Column title="修改时间" dataIndex="updateTime" key="updateTime" />
@@ -192,54 +167,8 @@ const User: FC = () => {
         />
       </Table>
       {/* E table */}
-
-      {/* S 弹窗 */}
-      <Modal
-        title="编辑用户"
-        visible={modalVisible}
-        onOk={() => {
-          modalForm.submit();
-        }}
-        okButtonProps={{ loading: modalRequest.loading }}
-        onCancel={() => {
-          setModalVisible(false);
-          modalForm.resetFields();
-        }}
-      >
-        <Form
-          form={modalForm}
-          name="control-hooks"
-          labelCol={{ span: 3 }}
-          wrapperCol={{ span: 21 }}
-          onFinish={(values) => {
-            modalRequest.run({
-              data: values,
-              method: "POST",
-              url: "updateUser",
-            });
-          }}
-        >
-          <Form.Item name={"id"} hidden>
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="username"
-            label="用户名"
-            rules={[{ required: true, message: "请输入用户名称!" }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item name="nickname" label="昵称">
-            <Input />
-          </Form.Item>
-          <Form.Item name="password" label="密码">
-            <Input />
-          </Form.Item>
-        </Form>
-      </Modal>
-      {/* E 弹窗 */}
     </Card>
   );
 };
 
-export default User;
+export default PDF;

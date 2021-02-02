@@ -5,5 +5,6 @@ export const permissionList=[
     '/flow',
     '/flow/list',
     '/flow/oder',
+    '/pdf',
     '/404',
 ]
