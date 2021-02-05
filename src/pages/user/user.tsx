@@ -15,16 +15,16 @@ import {
 import { useRequest } from "ahooks";
 import { handleService } from "../../utils/request";
 import dayjs from "dayjs";
+import CqTableUtils from "../../components/Cq-TableUtils";
+import { SizeType } from "antd/lib/config-provider/SizeContext";
+import { gender, col } from "../../option";
 
 const { Column } = Table;
 
-enum gender {
-  男 = 1,
-  女 = 2,
-}
-
 const User: FC = () => {
+
   //状态类
+  const [tableSize, setTableSize] = useState<SizeType>("middle");
   const [searchData, setSearchData] = useState({});
   const [modalVisible, setModalVisible] = useState(false);
   const [form] = Form.useForm();
@@ -82,7 +82,7 @@ const User: FC = () => {
   //方法类
   const getFields = () => {
     let children = (
-      <Col span={8}>
+      <Col lg={col.lg} md={col.md} sm={col.sm} xs={col.xs}>
         <Form.Item name="username" label="用户名称:">
           <Input placeholder="请输入用户名称" />
         </Form.Item>
@@ -92,31 +92,33 @@ const User: FC = () => {
   };
   const formSearch = () => {
     return (
-      <Form
-        form={form}
-        name="advanced_search"
-        className="ant-advanced-search-form"
-        onFinish={(values) => {
-          setSearchData(values);
-        }}
-      >
-        <Row gutter={24}>{getFields()}</Row>
-        <Row>
-          <Col span={24} style={{ textAlign: "right" }}>
-            <Button type="primary" htmlType="submit">
-              查询
-            </Button>
-            <Button
-              style={{ margin: "0 8px" }}
-              onClick={() => {
-                form.resetFields();
-              }}
-            >
-              重置
-            </Button>
-          </Col>
-        </Row>
-      </Form>
+      <Card style={{ marginBottom: "15px" }}>
+        <Form
+          form={form}
+          name="advanced_search"
+          className="ant-advanced-search-form"
+          onFinish={(values) => {
+            setSearchData(values);
+          }}
+        >
+          <Row gutter={24}>{getFields()}</Row>
+          <Row>
+            <Col span={24} style={{ textAlign: "right" }}>
+              <Button type="primary" htmlType="submit">
+                查询
+              </Button>
+              <Button
+                style={{ margin: "0 8px" }}
+                onClick={() => {
+                  form.resetFields();
+                }}
+              >
+                重置
+              </Button>
+            </Col>
+          </Row>
+        </Form>
+      </Card>
     );
   };
   const formatterPagination = () => {
@@ -165,32 +167,35 @@ const User: FC = () => {
     );
   };
   return (
-    <Card>
+    <>
       {formSearch()}
 
       {/* S table */}
-      <Table<UserProps>
-        {...formatterPagination()}
-        scroll={{ scrollToFirstRowOnChange: true, x: 1500, y: 550 }}
-      >
-        <Column title="姓名" dataIndex="username" key="age" />
-        <Column
-          title="性别"
-          dataIndex="gender"
-          key="gender"
-          render={(text) => <>{gender[text]}</>}
-        />
-        <Column title="昵称" dataIndex="nickname" key="nickname" />
-        <Column title="创建时间" dataIndex="createTime" key="createTime" />
-        <Column title="修改时间" dataIndex="updateTime" key="updateTime" />
-        <Column<UserProps>
-          title="操作"
-          width={200}
-          key="action"
-          fixed="right"
-          render={renderAction}
-        />
-      </Table>
+      <Card>
+        <CqTableUtils refresh={refresh} setTableSize={setTableSize} />
+        <Table<UserProps>
+          {...formatterPagination()}
+          scroll={{ scrollToFirstRowOnChange: true, x: 1500 }}
+          size={tableSize}
+        >
+          <Column title="姓名" dataIndex="username" key="age" />
+          <Column
+            title="性别"
+            dataIndex="gender"
+            key="gender"
+            render={(text) => <>{gender[text]}</>}
+          />
+          <Column title="昵称" dataIndex="nickname" key="nickname" />
+          <Column title="创建时间" dataIndex="createTime" key="createTime" />
+          <Column title="修改时间" dataIndex="updateTime" key="updateTime" />
+          <Column<UserProps>
+            title="操作"
+            width={180}
+            key="action"
+            render={renderAction}
+          />
+        </Table>
+      </Card>
       {/* E table */}
 
       {/* S 弹窗 */}
@@ -238,7 +243,7 @@ const User: FC = () => {
         </Form>
       </Modal>
       {/* E 弹窗 */}
-    </Card>
+    </>
   );
 };
 

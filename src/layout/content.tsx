@@ -4,12 +4,10 @@ import { Switch } from "react-router-dom";
 import Siders from "./sider";
 import Routers from "../router/index";
 import AuthRoute from "../components/authRoute";
-import Headers from './header'
+import Headers from "./header";
 
 import { Layout } from "antd";
 import Footers from "./footer";
-
-const { Content } = Layout;
 const Contents: FC = () => {
   //根据后端permissionList动态载入组件
   let routeData: shouldRenderProps[] = [];
@@ -22,19 +20,19 @@ const Contents: FC = () => {
           routeData.push(item);
         }
       }
-      return undefined
+      return undefined;
     });
   };
   rednderRoute(Routers);
   return (
-    <Layout style={{ minHeight:'100vh' }}>
+    <Layout style={{ minHeight: "100vh" }}>
       <Siders />
-      <Layout>
+      <Layout style={{ height: "100vh", overflowY: "auto" }}>
         <Headers />
-        <Content>
+        <div style={{ flex: "auto" }}>
           <div
             className="site-layout-background"
-            style={{ padding: '10px 24px 0px 24px', minHeight: 360 }}
+            style={{ padding: "10px 24px 0px 24px", minHeight: 360 }}
           >
             <Switch>
               {routeData.map((item: any, index: number) => {
@@ -42,7 +40,7 @@ const Contents: FC = () => {
               })}
             </Switch>
           </div>
-        </Content>
+        </div>
         <Footers />
       </Layout>
     </Layout>

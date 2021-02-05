@@ -11,18 +11,30 @@ import {
   Space,
   Popconfirm,
   DatePicker,
+  Modal,
 } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 import { useRequest } from "ahooks";
 import { handleService } from "../../utils/request";
 import dayjs from "dayjs";
+import CqTableUtils from "../../components/Cq-TableUtils";
+import { SizeType } from "antd/lib/config-provider/SizeContext";
+import { col } from "../../option/index";
 
 const { Column } = Table;
 const { RangePicker } = DatePicker;
+const layout = {
+  labelCol: { span: 6 },
+  wrapperCol: { span: 18 },
+};
 
 const PDF: FC = () => {
   //状态类
+  const [tableSize, setTableSize] = useState<SizeType>("middle");
   const [searchData, setSearchData] = useState({});
   const [form] = Form.useForm();
+  const [modealForm] = Form.useForm();
+  const [modalVisible, setModalVisible] = useState(false);
   //请求类
   const { tableProps, refresh } = useRequest(
     ({ current, pageSize }) => {
@@ -62,23 +74,34 @@ const PDF: FC = () => {
       }
     },
   });
+  const modalRequest = useRequest(handleService, {
+    manual: true,
+    onSuccess: (result) => {
+      if (result) {
+        setModalVisible(false);
+        modealForm.resetFields();
+        message.success("编辑成功");
+        refresh();
+      }
+    },
+  });
   //方法类
   const getFields = () => {
     let children = (
       <>
-        <Col span={8}>
+        <Col lg={col.lg} md={col.md} sm={col.sm} xs={col.xs}>
           <Form.Item name="username" label="服务商名称:">
             <Input placeholder="请输入服务商名称" />
           </Form.Item>
         </Col>
-        <Col span={8}>
+        <Col lg={col.lg} md={col.md} sm={col.sm} xs={col.xs}>
           <Form.Item name="username" label="服务人员名称:">
             <Input placeholder="请输入服务人员名称" />
           </Form.Item>
         </Col>
-        <Col span={8}>
+        <Col lg={col.lg} md={col.md} sm={col.sm} xs={col.xs}>
           <Form.Item name="username" label="服务日期:">
-            <RangePicker style={{width:'100%'}} />
+            <RangePicker style={{ width: "100%" }} />
           </Form.Item>
         </Col>
       </>
@@ -87,31 +110,34 @@ const PDF: FC = () => {
   };
   const formSearch = () => {
     return (
-      <Form
-        form={form}
-        name="advanced_search"
-        className="ant-advanced-search-form"
-        onFinish={(values) => {
-          setSearchData(values);
-        }}
-      >
-        <Row gutter={24}>{getFields()}</Row>
-        <Row>
-          <Col span={24} style={{ textAlign: "right" }}>
-            <Button type="primary" htmlType="submit">
-              查询
-            </Button>
-            <Button
-              style={{ margin: "0 8px" }}
-              onClick={() => {
-                form.resetFields();
-              }}
-            >
-              重置
-            </Button>
-          </Col>
-        </Row>
-      </Form>
+      <Card style={{ marginBottom: "15px" }}>
+        <Form
+          form={form}
+          name="advanced_search"
+          className="ant-advanced-search-form"
+          onFinish={(values) => {
+            setSearchData(values);
+          }}
+        >
+          <Row gutter={24}>{getFields()}</Row>
+          <Row>
+            <Col span={24} style={{ textAlign: "right" }}>
+              <Space size="middle">
+                <Button type="primary" htmlType="submit">
+                  查询
+                </Button>
+                <Button
+                  onClick={() => {
+                    form.resetFields();
+                  }}
+                >
+                  重置
+                </Button>
+              </Space>
+            </Col>
+          </Row>
+        </Form>
+      </Card>
     );
   };
   const formatterPagination = () => {
@@ -145,29 +171,125 @@ const PDF: FC = () => {
       </Space>
     );
   };
+  /**
+   * @编辑模态框
+   */
+  const addPdf = () => {
+    setModalVisible(true);
+  };
   return (
-    <Card>
+    <>
       {formSearch()}
 
       {/* S table */}
-      <Table<UserProps>
-        {...formatterPagination()}
-        scroll={{ scrollToFirstRowOnChange: true, x: 1500, y: 550 }}
-      >
-        <Column title="姓名" dataIndex="username" key="age" />
-        <Column title="昵称" dataIndex="nickname" key="nickname" />
-        <Column title="创建时间" dataIndex="createTime" key="createTime" />
-        <Column title="修改时间" dataIndex="updateTime" key="updateTime" />
-        <Column<UserProps>
-          title="操作"
-          width={200}
-          key="action"
-          fixed="right"
-          render={renderAction}
-        />
-      </Table>
+      <Card>
+        <CqTableUtils refresh={refresh} setTableSize={setTableSize}>
+          <Button onClick={addPdf} type="primary" icon={<PlusOutlined />}>
+            新建
+          </Button>
+        </CqTableUtils>
+        <Table<UserProps>
+          {...formatterPagination()}
+          scroll={{ scrollToFirstRowOnChange: true, x: 1500 }}
+          size={tableSize}
+        >
+          <Column title="姓名" dataIndex="username" key="age" />
+          <Column title="昵称" dataIndex="nickname" key="nickname" />
+          <Column title="创建时间" dataIndex="createTime" key="createTime" />
+          <Column title="修改时间" dataIndex="updateTime" key="updateTime" />
+          <Column<UserProps>
+            title="操作"
+            width={200}
+            key="action"
+            render={renderAction}
+          />
+        </Table>
+      </Card>
       {/* E table */}
-    </Card>
+
+      {/* S 新增PDF弹窗 */}
+      <Modal
+        title="新增"
+        width={700}
+        visible={modalVisible}
+        onCancel={() => {
+          setModalVisible(false);
+          modealForm.resetFields();
+        }}
+        footer={[
+          <Button
+            key="add"
+            type="primary"
+            onClick={() => {
+              console.log("虫害描述");
+            }}
+          >
+            新增餐厅虫害描述
+          </Button>,
+          <Button
+            key="back"
+            onClick={() => {
+              setModalVisible(false);
+              modealForm.resetFields();
+            }}
+          >
+            取消
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            loading={modalRequest.loading}
+            onClick={() => {
+              modealForm.submit();
+            }}
+          >
+            确认
+          </Button>,
+        ]}
+      >
+        <Form
+          {...layout}
+          name="basic"
+          form={modealForm}
+          onFinish={(values) => {
+            const parmas={...values,servicePestisLists:[{area:'厨房',questionClassify:'飞虫'},{area:'客厅',questionClassify:'老鼠'}]}
+            modalRequest.run({
+              data:parmas,
+              url:'savePdf',
+              method:'POST'
+            })
+          }}
+        >
+          <Form.Item
+            label="服务商名称"
+            name="serviceName"
+            rules={[{ required: true, message: "请输入服务商名称!" }]}
+          >
+            <Input placeholder="请输入服务商名称" />
+          </Form.Item>
+          <Form.Item
+            label="餐厅名称/国际编码"
+            name="restaurant"
+            rules={[{ required: true, message: "请输入餐厅名称/国际编码!" }]}
+          >
+            <Input placeholder="请输入餐厅名称/国际编码" />
+          </Form.Item>
+          <Form.Item label="服务日期" name="serviceTime">
+            <DatePicker placeholder="请选择服务日期" />
+          </Form.Item>
+          <Form.Item label="餐厅内部压力" name="restaurantStress">
+            <Input placeholder="请输入餐厅内部压力" />
+          </Form.Item>
+          <Form.Item label="服务人员" name="servicePerson">
+            <Input placeholder="请输入服务人员" />
+          </Form.Item>
+          <Form.Item label="服务形式" name="serviceMethod">
+            <Input placeholder="请输入服务形式" />
+          </Form.Item>
+        </Form>
+      </Modal>
+      {/* E 新增PDF弹窗 */}
+    </>
   );
 };
 
