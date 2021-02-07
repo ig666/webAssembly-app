@@ -8,11 +8,10 @@ import { UseRequestProvider } from "ahooks";
 import "nprogress/nprogress.css";
 import { ConfigProvider } from "antd";
 import zh_CN from "antd/lib/locale-provider/zh_CN";
-import moment from "moment";
-import "moment/locale/zh-cn";
+import dayjs from "dayjs";
+import "dayjs/locale/zh-cn"; // 导入本地化语言
 
-moment.locale("zh-cn");
-
+dayjs.locale("zh-cn"); // 使用本地化语言
 const theme = {
   color: "#f1939c",
 };

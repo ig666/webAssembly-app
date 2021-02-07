@@ -97,7 +97,7 @@ const User: FC = () => {
           form={form}
           name="advanced_search"
           className="ant-advanced-search-form"
-          onFinish={(values) => {
+          onFinish={(values:any) => {
             setSearchData(values);
           }}
         >
@@ -183,7 +183,7 @@ const User: FC = () => {
             title="性别"
             dataIndex="gender"
             key="gender"
-            render={(text) => <>{gender[text]}</>}
+            render={(text:number) => <>{gender[text]}</>}
           />
           <Column title="昵称" dataIndex="nickname" key="nickname" />
           <Column title="创建时间" dataIndex="createTime" key="createTime" />
@@ -216,7 +216,7 @@ const User: FC = () => {
           name="control-hooks"
           labelCol={{ span: 3 }}
           wrapperCol={{ span: 21 }}
-          onFinish={(values) => {
+          onFinish={(values:any) => {
             modalRequest.run({
               data: values,
               method: "POST",

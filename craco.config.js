@@ -1,6 +1,12 @@
 // const { getThemeVariables } = require("antd/dist/theme");
 const CracoLessPlugin = require("craco-less");
+const AntdDayjsWebpackPlugin = require("antd-dayjs-webpack-plugin");
 module.exports = {
+  webpack:{
+    plugins:[
+      new AntdDayjsWebpackPlugin()
+    ]
+  },
   plugins: [
     {
       plugin: CracoLessPlugin,

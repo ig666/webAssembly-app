@@ -40,7 +40,7 @@ const PDF: FC = () => {
     ({ current, pageSize }) => {
       return handleService({
         data: { pageSize, pageIndex: current, ...searchData },
-        url: "getListBypage",
+        url: "getPdfList",
         method: "GET",
       });
     },
@@ -90,17 +90,17 @@ const PDF: FC = () => {
     let children = (
       <>
         <Col lg={col.lg} md={col.md} sm={col.sm} xs={col.xs}>
-          <Form.Item name="username" label="服务商名称:">
+          <Form.Item name="serviceName" label="服务商名称:">
             <Input placeholder="请输入服务商名称" />
           </Form.Item>
         </Col>
         <Col lg={col.lg} md={col.md} sm={col.sm} xs={col.xs}>
-          <Form.Item name="username" label="服务人员名称:">
+          <Form.Item name="servicePerson" label="服务人员名称:">
             <Input placeholder="请输入服务人员名称" />
           </Form.Item>
         </Col>
         <Col lg={col.lg} md={col.md} sm={col.sm} xs={col.xs}>
-          <Form.Item name="username" label="服务日期:">
+          <Form.Item name="serviceTime" label="服务日期:">
             <RangePicker style={{ width: "100%" }} />
           </Form.Item>
         </Col>
@@ -116,6 +116,11 @@ const PDF: FC = () => {
           name="advanced_search"
           className="ant-advanced-search-form"
           onFinish={(values) => {
+            if(values.serviceTime){
+              values.serviceStartTime=values.serviceTime[0]
+              values.serviceEndTime=values.serviceTime[1]
+            }
+            delete values.serviceTime
             setSearchData(values);
           }}
         >
@@ -193,8 +198,13 @@ const PDF: FC = () => {
           scroll={{ scrollToFirstRowOnChange: true, x: 1500 }}
           size={tableSize}
         >
-          <Column title="姓名" dataIndex="username" key="age" />
-          <Column title="昵称" dataIndex="nickname" key="nickname" />
+          <Column title="服务商名称" dataIndex="serviceName" key="serviceName" />
+          <Column title="餐厅名称" dataIndex="restaurant" key="restaurant" />
+          <Column title="服务日期" dataIndex="serviceTime" key="serviceTime" />
+          <Column title="服务人员" dataIndex="servicePerson" key="servicePerson" />
+          <Column title="服务形式" dataIndex="serviceMethod" key="serviceMethod" />
+          <Column title="服务开始时间" dataIndex="serviceStartTime" key="serviceStartTime" />
+          <Column title="服务结束时间" dataIndex="serviceEndTime" key="serviceEndTime" />
           <Column title="创建时间" dataIndex="createTime" key="createTime" />
           <Column title="修改时间" dataIndex="updateTime" key="updateTime" />
           <Column<UserProps>
@@ -252,6 +262,7 @@ const PDF: FC = () => {
           name="basic"
           form={modealForm}
           onFinish={(values) => {
+            values.serviceTime=dayjs(values.serviceTime)
             const parmas={...values,servicePestisLists:[{area:'厨房',questionClassify:'飞虫'},{area:'客厅',questionClassify:'老鼠'}]}
             modalRequest.run({
               data:parmas,
