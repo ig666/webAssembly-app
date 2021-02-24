@@ -71,13 +71,13 @@ interface serviceProps {
 export function handleService(service: serviceProps) {
   if (service.method === "GET" || service.method === 'DELETE') {
     return request({
-      url: "http://10.98.6.97:8080/" + service.url,
+      url: "http://localhost:8080/" + service.url,
       params: service.data,
       method: service.method,
     });
   } else {
     return request({
-      url: "http://10.98.6.97:8080/" + service.url,
+      url: "http://localhost:8080/" + service.url,
       data: service.data,
       method: service.method,
     });
