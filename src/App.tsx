@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.less";
 import { Provider } from "mobx-react";
-import { CreateStores } from "./store/createStores";
 import AppRouter from "./layout/index";
 import { ThemeProvider } from "@material-ui/styles";
 import { UseRequestProvider } from "ahooks";
@@ -24,12 +23,11 @@ const theme = {
  */
 
 function App() {
-  const store = CreateStores();
   return (
     <ConfigProvider locale={zh_CN}>
       <UseRequestProvider value={{}}>
         <ThemeProvider theme={theme}>
-          <Provider {...store}>
+          <Provider>
             <div className="App">
               <AppRouter />
             </div>
