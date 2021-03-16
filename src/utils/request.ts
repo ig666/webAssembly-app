@@ -50,6 +50,7 @@ request.interceptors.response.use(
       return;
     }
     if (error.response.status === 401) {
+      console.log(error.response.status,'进入错误xxxx')
       const history = useHistory();
       localStorage.setItem("authToken", "");
       history.push("/login");
