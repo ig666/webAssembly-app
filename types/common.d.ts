@@ -9,5 +9,5 @@ interface shouldRenderProps {
     auth?: boolean,
     hidden?: boolean,
     component?: React.FC<T>,
-    childrens?: shouldRenderProps[]
+    children?: shouldRenderProps[]
 }

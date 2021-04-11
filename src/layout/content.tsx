@@ -13,8 +13,8 @@ const Contents: FC = () => {
   let routeData: shouldRenderProps[] = [];
   const rednderRoute = (routes: shouldRenderProps[]): any => {
     routes.map((item) => {
-      if (item.childrens) {
-        return rednderRoute(item.childrens);
+      if (item.children) {
+        return rednderRoute(item.children);
       } else {
         if (permissionList.includes(item.path)) {
           routeData.push(item);

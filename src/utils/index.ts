@@ -8,12 +8,12 @@ export const treeToList = (setTree: shouldRenderProps[]) => {
   var out: shouldRenderProps[] = [];
   queen = queen.concat(tree);
   while(queen.length){
-      var first=queen.shift()
-      if(first?.childrens){
-          queen=queen.concat(first.childrens)
+      var first = queen.shift()
+      if (first?.children) {
+          queen = queen.concat(first.children)
       }
-      if(first){
-        out.push(first)
+      if (first) {
+          out.push(first)
       }
   }
   return out

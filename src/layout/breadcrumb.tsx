@@ -15,17 +15,17 @@ const Breadcrumbs: FC = () => {
     return (
       <Breadcrumb.Item key={url}>
         {list.map((item) => {
-          if (item.path === url && item.childrens) {
+          if (item.path === url && item.children) {
             return (
-              <Link key={url} to={item.childrens[0].path}>
-                {item.title}
-              </Link>
+                <Link key={url} to={item.children[0].path}>
+                  {item.title}
+                </Link>
             );
           } else if (item.path === url && index + 1 !== length) {
             return (
-              <Link key={url} to={item.path}>
-                {item.title}
-              </Link>
+                <Link key={url} to={item.path}>
+                  {item.title}
+                </Link>
             );
           } else if (item.path === url) {
             return <span key={url}>{item.title}</span>;
