@@ -1,4 +1,3 @@
-import React from "react";
 import "./App.less";
 import { Provider } from "mobx-react";
 import AppRouter from "./layout/index";
