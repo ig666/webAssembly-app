@@ -1,10 +1,9 @@
 
 export const permissionList=[
     '/home',
-    '/user',
-    '/flow',
-    '/flow/list',
-    '/flow/oder',
-    '/pdf',
+    '/courseware',
+    // '/flow',
+    // '/flow/oder',
+    '/student-manger',
     '/404',
 ]

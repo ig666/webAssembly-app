@@ -28,7 +28,7 @@ const layout = {
   wrapperCol: { span: 18 },
 };
 
-const PDF: FC = () => {
+const StudentManger: FC = () => {
   //状态类
   const [tableSize, setTableSize] = useState<SizeType>("middle");
   const [searchData, setSearchData] = useState({});
@@ -332,4 +332,4 @@ const PDF: FC = () => {
   );
 };
 
-export default PDF;
+export default StudentManger;

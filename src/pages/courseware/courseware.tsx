@@ -21,7 +21,7 @@ import { gender, col } from "../../option";
 
 const { Column } = Table;
 
-const User: FC = () => {
+const Courseware: FC = () => {
 
   //状态类
   const [tableSize, setTableSize] = useState<SizeType>("middle");
@@ -247,4 +247,4 @@ const User: FC = () => {
   );
 };
 
-export default User;
+export default Courseware;

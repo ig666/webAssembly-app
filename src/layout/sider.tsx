@@ -1,15 +1,15 @@
-import React, {FC} from "react";
-import {Layout, Menu} from "antd";
-import {createFromIconfontCN} from "@ant-design/icons";
-import {permissionList} from "../mock/permissions";
+import { FC } from "react";
+import { Layout, Menu } from "antd";
+import { createFromIconfontCN } from "@ant-design/icons";
+import { permissionList } from "../mock/permissions";
 import Routers from "../router/index";
-import {Link, useHistory} from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const IconFont = createFromIconfontCN({
-  scriptUrl: "//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js",
+  scriptUrl: "//at.alicdn.com/t/font_2790190_awjvblz3k5q.js",
 });
-const {Sider} = Layout;
-const {SubMenu} = Menu;
+const { Sider } = Layout;
+const { SubMenu } = Menu;
 
 interface props {
   fPath?: string;
@@ -58,25 +58,25 @@ const Siders: FC = () => {
     return Routers.map((item) => {
       if (!item.children && !item.hidden) {
         return (
-            <Menu.Item
-                key={item.path}
-                icon={item.icon && <IconFont type={item.icon}/>}
-            >
-              {shouldReturnLink(item)}
-            </Menu.Item>
+          <Menu.Item
+            key={item.path}
+            icon={item.icon && <IconFont type={item.icon} />}
+          >
+            {shouldReturnLink(item)}
+          </Menu.Item>
         );
       } else if (item.children && !item.hidden) {
         return (
-            <SubMenu
-                key={item.path}
-                icon={item.icon && <IconFont type={item.icon}/>}
-                title={item.title}
-            >
-              {renderMenu(item.children)}
-            </SubMenu>
+          <SubMenu
+            key={item.path}
+            icon={item.icon && <IconFont type={item.icon} />}
+            title={item.title}
+          >
+            {renderMenu(item.children)}
+          </SubMenu>
         );
       }
-      return undefined
+      return undefined;
     });
   };
   return (
