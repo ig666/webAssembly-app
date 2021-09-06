@@ -5,5 +5,6 @@ export const permissionList=[
     // '/flow',
     // '/flow/oder',
     '/student-manger',
+    '/user-manager',
     '/404',
 ]
