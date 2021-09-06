@@ -14,7 +14,7 @@ module.exports = {
         lessLoaderOptions: {
           lessOptions: {
             modifyVars: {
-              "primary-color": "#ee3f4d",
+              "primary-color": "#00A6C9",
               // ...getThemeVariables({
               //   dark: true, // 开启暗黑模式
               //   compact: false, // 开启紧凑模式

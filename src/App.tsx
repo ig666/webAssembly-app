@@ -1,18 +1,16 @@
 import "./App.less";
+import { useState } from "react";
 import { Provider } from "mobx-react";
+import { ThemeContext } from "./context";
 import AppRouter from "./layout/index";
-import { ThemeProvider } from "@material-ui/styles";
 import { UseRequestProvider } from "ahooks";
 import "nprogress/nprogress.css";
-import { ConfigProvider } from "antd";
+import { Button, ConfigProvider } from "antd";
 import zh_CN from "antd/lib/locale-provider/zh_CN";
 import dayjs from "dayjs";
 import "dayjs/locale/zh-cn"; // 导入本地化语言
 
 dayjs.locale("zh-cn"); // 使用本地化语言
-const theme = {
-  color: "#f1939c",
-};
 /**
  * @描述
  * @ConfigProvider antd全局配置容器
@@ -22,18 +20,28 @@ const theme = {
  */
 
 function App() {
+  //全局颜色
+  const [theme, setTheme] = useState({ color: 1 });
+
   return (
-    <ConfigProvider locale={zh_CN}>
-      <UseRequestProvider value={{}}>
-        <ThemeProvider theme={theme}>
+    <ThemeContext.Provider value={theme}>
+      <ConfigProvider locale={zh_CN}>
+        <UseRequestProvider value={{}}>
           <Provider>
+            <Button
+              onClick={() => {
+                setTheme({ color: theme.color+1 });
+              }}
+            >
+              点击切换主题色{theme.color}
+            </Button>
             <div className="App">
               <AppRouter />
             </div>
           </Provider>
-        </ThemeProvider>
-      </UseRequestProvider>
-    </ConfigProvider>
+        </UseRequestProvider>
+      </ConfigProvider>
+    </ThemeContext.Provider>
   );
 }
 
