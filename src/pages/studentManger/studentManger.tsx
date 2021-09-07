@@ -9,7 +9,6 @@ import {
   Button,
   Table,
   Space,
-  Popconfirm,
   DatePicker,
   Modal,
 } from "antd";
@@ -59,15 +58,6 @@ const StudentManger: FC = () => {
       },
     }
   );
-  const { run } = useRequest(handleService, {
-    manual: true,
-    onSuccess: (result) => {
-      if (result) {
-        message.success("删除成功");
-        refresh();
-      }
-    },
-  });
   const modalRequest = useRequest(handleService, {
     manual: true,
     onSuccess: (result) => {
@@ -132,6 +122,7 @@ const StudentManger: FC = () => {
                 <Button
                   onClick={() => {
                     form.resetFields();
+                    setSearchData("");
                   }}
                 >
                   重置
@@ -151,31 +142,8 @@ const StudentManger: FC = () => {
       `${range[0]}-${range[1]} of ${total} items`;
     return tableProps;
   };
-  const renderAction = (text: string, record: UserProps) => {
-    return (
-      <Space size="middle">
-        <Popconfirm
-          title="确认删除?"
-          onConfirm={() => {
-            run({
-              data: { id: record.id },
-              method: "DELETE",
-              url: "deleteUser",
-            });
-          }}
-          onCancel={() => {
-            console.log("点击了取消");
-          }}
-          okText="确认"
-          cancelText="取消"
-        >
-          <Button>删除</Button>
-        </Popconfirm>
-      </Space>
-    );
-  };
   /**
-   * @编辑模态框
+   * @新增模态框
    */
   const addPdf = () => {
     setModalVisible(true);
@@ -225,12 +193,6 @@ const StudentManger: FC = () => {
           />
           <Column title="创建时间" dataIndex="createTime" key="createTime" />
           <Column title="修改时间" dataIndex="updateTime" key="updateTime" />
-          <Column<UserProps>
-            title="操作"
-            width={200}
-            key="action"
-            render={renderAction}
-          />
         </Table>
       </Card>
       {/* E table */}

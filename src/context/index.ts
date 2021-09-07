@@ -1,4 +1,10 @@
 //全局容器
 import React from "react";
 
-export const ThemeContext = React.createContext({});
+interface ThemeContextProps {
+  color: string;
+}
+
+export const ThemeContext = React.createContext<ThemeContextProps>({
+  color: "",
+});

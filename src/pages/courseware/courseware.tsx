@@ -111,6 +111,7 @@ const Courseware: FC = () => {
                 style={{ margin: "0 8px" }}
                 onClick={() => {
                   form.resetFields();
+                  setSearchData('');
                 }}
               >
                 重置

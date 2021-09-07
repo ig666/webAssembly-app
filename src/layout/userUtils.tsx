@@ -1,11 +1,21 @@
-import React, { FC, useState, useRef, useEffect } from "react";
-import { AutoComplete, Input, Button, Row, Col } from "antd";
+import { FC, useState, useRef, useEffect, useContext } from "react";
+import {
+  AutoComplete,
+  Input,
+  Button,
+  Row,
+  Col,
+  Avatar,
+  Menu,
+  Dropdown,
+} from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { makeStyles } from "@material-ui/styles";
 import Routers from "../router";
 import { treeToList } from "../utils";
 import { useHistory } from "react-router-dom";
 import { FullscreenOutlined, FullscreenExitOutlined } from "@ant-design/icons";
+import { ThemeContext } from "../context";
 
 interface props {
   width: string;
@@ -21,16 +31,22 @@ const useStyles = makeStyles({
   box: {
     display: "flex",
     alignItems: "center",
-    zIndex:1
+    zIndex: 1,
+  },
+  personAction: {
+    marginLeft: 20,
+    display: "flex",
+    alignItems: "center",
   },
 });
 const UserUtils: FC = () => {
   const fourInput = useRef<Input>(null);
   const [showInput, setShowInput] = useState(false);
-  const [exit,setExit]=useState(false)
+  const [exit, setExit] = useState(false);
   const classes = useStyles({ width: showInput ? "100%" : "0" });
   const [options, setOptions] = useState<{ value: string }[]>([]);
   const history = useHistory();
+  const theme = useContext(ThemeContext);
 
   //全屏按钮
   const magnify = () => {
@@ -38,10 +54,10 @@ const UserUtils: FC = () => {
       return (
         <Button
           onClick={() => {
-            setExit(false)
+            setExit(false);
             document.exitFullscreen();
           }}
-          style={{ marginLeft: '3vw' }}
+          style={{ marginLeft: "3vw" }}
           type="primary"
           shape="circle"
           icon={<FullscreenExitOutlined />}
@@ -51,10 +67,10 @@ const UserUtils: FC = () => {
       return (
         <Button
           onClick={() => {
-            setExit(true)
+            setExit(true);
             document.documentElement.requestFullscreen();
           }}
-          style={{ marginLeft: '3vw' }}
+          style={{ marginLeft: "3vw" }}
           type="primary"
           shape="circle"
           icon={<FullscreenOutlined />}
@@ -110,7 +126,7 @@ const UserUtils: FC = () => {
           onClick={() => {
             setShowInput(true);
           }}
-          style={{width:192, fontSize: 15, cursor: 'pointer' }}
+          style={{ width: 192, fontSize: 15, cursor: "pointer" }}
         >
           <SearchOutlined />
           <span style={{ marginLeft: 15, color: "#BFBFBF" }}>搜索</span>
@@ -118,9 +134,36 @@ const UserUtils: FC = () => {
       );
     }
   };
+  //个人下拉操作
+  const renderPersonAction = () => {
+    //退出登录方法
+    const loginOut = () => {
+      localStorage.setItem("authToken", "");
+      history.push("/login");
+    };
+
+    //下拉菜单
+    const menu = (
+      <Menu onClick={loginOut}>
+        <Menu.Item key="loginOut">退出</Menu.Item>
+      </Menu>
+    );
+    return (
+      <div className={classes.personAction}>
+        <Dropdown overlay={menu} placement="bottomLeft" arrow>
+          <Avatar
+            style={{ backgroundColor: theme.color, verticalAlign: "middle" }}
+            size="default"
+            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+          />
+        </Dropdown>
+      </div>
+    );
+  };
   return (
     <div className={classes.box}>
       {renderSearch()}
+      {renderPersonAction()}
       {magnify()}
     </div>
   );

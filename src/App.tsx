@@ -5,7 +5,7 @@ import { ThemeContext } from "./context";
 import AppRouter from "./layout/index";
 import { UseRequestProvider } from "ahooks";
 import "nprogress/nprogress.css";
-import { Button, ConfigProvider } from "antd";
+import { ConfigProvider } from "antd";
 import zh_CN from "antd/lib/locale-provider/zh_CN";
 import dayjs from "dayjs";
 import "dayjs/locale/zh-cn"; // 导入本地化语言
@@ -21,20 +21,13 @@ dayjs.locale("zh-cn"); // 使用本地化语言
 
 function App() {
   //全局颜色
-  const [theme, setTheme] = useState({ color: 1 });
+  const [theme] = useState({ color: "#00A6C9" });
 
   return (
     <ThemeContext.Provider value={theme}>
       <ConfigProvider locale={zh_CN}>
         <UseRequestProvider value={{}}>
           <Provider>
-            <Button
-              onClick={() => {
-                setTheme({ color: theme.color+1 });
-              }}
-            >
-              点击切换主题色{theme.color}
-            </Button>
             <div className="App">
               <AppRouter />
             </div>
