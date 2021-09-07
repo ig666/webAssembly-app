@@ -6,7 +6,7 @@ import Routers from "../router/index";
 import { Link, useHistory } from "react-router-dom";
 
 const IconFont = createFromIconfontCN({
-  scriptUrl: "//at.alicdn.com/t/font_2790190_awjvblz3k5q.js",
+  scriptUrl: "//at.alicdn.com/t/font_2790190_rdurkqro5t.js",
 });
 const { Sider } = Layout;
 const { SubMenu } = Menu;
